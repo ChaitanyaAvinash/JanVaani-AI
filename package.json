@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx prisma/seed.ts",
-    "db:reset": "prisma migrate reset"
+    "db:reset": "prisma migrate reset",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
