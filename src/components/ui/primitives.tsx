@@ -43,7 +43,6 @@ export function StatTile({
   );
 }
 
-/** A compact labeled meter — fill carries magnitude, track is a lighter step of the same hue. */
 export function Meter({ label, value }: { label: string; value: number }) {
   const pct = Math.max(0, Math.min(100, value));
   return (

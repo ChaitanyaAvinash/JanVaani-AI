@@ -108,10 +108,6 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-/** Free-tier Gemini quotas are tight (a handful of requests/minute). On a
- * 429 the API tells us exactly how long to back off — honor that instead of
- * guessing, and only fall back to the offline analyzer once retries are
- * exhausted. */
 function retryDelayMs(err: unknown): number | null {
   const e = err as { status?: number; errorDetails?: Array<{ "@type"?: string; retryDelay?: string }> };
   if (e?.status !== 429) return null;
@@ -129,10 +125,6 @@ export async function analyzeSubmission(
     return fallbackAnalyze(input);
   }
 
-  // Interactive requests (a citizen waiting on the Send button) must not
-  // hang for minutes on a rate limit — fail straight to the offline
-  // fallback. Only batch callers (the seed script) opt into patient
-  // retry-with-backoff, where waiting is fine.
   const MAX_ATTEMPTS = options?.patient ? 3 : 1;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
@@ -222,7 +214,6 @@ async function analyzeSubmissionOnce(
   };
 }
 
-/** A short, AI-written MP-facing paragraph comparing two priority items. */
 export async function generateComparisonNote(
   a: Record<string, unknown>,
   b: Record<string, unknown>
@@ -299,7 +290,6 @@ const KEYWORD_MAP: Array<{ category: Category; keywords: string[] }> = [
   },
 ];
 
-/** Deterministic keyword-based analysis used when GEMINI_API_KEY is not set, so the app and seed script still work offline. */
 function fallbackAnalyze(input: AnalysisInput): AnalysisResult {
   const haystack = (input.text || "").toLowerCase();
   const match = KEYWORD_MAP.find(({ keywords }) =>

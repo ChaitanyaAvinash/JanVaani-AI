@@ -1,18 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
-// A ward / mandal / polling booth cluster within the constituency.
-// Demographic + infrastructure fields are what let us weigh citizen
-// demand against actual need instead of just counting votes/complaints.
 model Ward {
   id                    String   @id @default(cuid())
   name                  String
@@ -21,17 +15,17 @@ model Ward {
   lat                   Float
   lng                   Float
   population            Int
-  literacyRate          Float // 0-100
-  unemploymentRate      Float // 0-100, youth unemployment proxy for vocational demand
+  literacyRate          Float
+  unemploymentRate      Float
   schoolEnrollment      Int
   schoolCapacity        Int
-  nearestSchoolKm       Float // avg travel distance to nearest school
+  nearestSchoolKm       Float
   nearestHospitalKm     Float
   householdsNoPipedWater Int
   households            Int
-  electricityGapPct     Float // % of households without reliable electricity supply
-  roadGapScore          Float // 0-100, higher = worse road condition / connectivity
-  housingGapPct         Float // % of households in kutcha/inadequate housing
+  electricityGapPct     Float
+  roadGapScore          Float
+  housingGapPct         Float
 
   submissions Submission[]
   proposals   Proposal[]
@@ -71,23 +65,21 @@ enum SubmissionStatus {
   error
 }
 
-// One citizen submission, in whatever form it arrived (text / voice / photo / chat).
-// The raw+translated content and AI-derived fields are what get clustered and scored.
 model Submission {
   id       String  @id @default(cuid())
   channel  Channel @default(text)
 
   rawText     String?
-  language    String? // ISO-ish code detected by the model: en, hi, te, other
+  language    String?
   translatedText String?
 
-  photoDataUrl String? // small demo images stored inline as data URLs
+  photoDataUrl String?
   photoDescription String?
 
-  audioDataUrl String? // demo-only inline storage of recorded audio
+  audioDataUrl String?
 
   category  Category?
-  urgency   Int? // 1-5
+  urgency   Int?
   sentiment Sentiment?
   summary   String?
 
@@ -103,14 +95,12 @@ model Submission {
   createdAt DateTime @default(now())
 }
 
-// A formally proposed project from the local development plan, competing
-// for the same budget/attention as citizen-raised demand clusters.
 model Proposal {
   id          String   @id @default(cuid())
   title       String
   description String
   category    Category
-  estCostLakh Float // estimated cost, INR lakh
+  estCostLakh Float
   wardId      String?
   ward        Ward?    @relation(fields: [wardId], references: [id])
   source      String   @default("development_plan")

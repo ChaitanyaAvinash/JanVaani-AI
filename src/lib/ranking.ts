@@ -2,15 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { CATEGORY_META } from "@/lib/categories";
 import type { Category, Sentiment } from "@/generated/prisma/enums";
 
-// Transparent, weighted scoring — deliberately NOT a black-box model, since an
-// MP needs to be able to defend a priority order in public. Every item's score
-// is the sum of three named, independently-inspectable factors:
-//   Demand    — how much citizen feedback exists, recency-weighted
-//   Urgency   — how severe citizens rated it (1-5, from AI analysis)
-//   Need gap  — how bad the underlying demographic/infra indicator is
-// Cost is deliberately excluded from the score itself (see estCostLakh on
-// proposal items) and shown alongside instead, so "priority" isn't quietly
-// redefined as "cheapness".
 export const RANKING_WEIGHTS = {
   demand: 0.4,
   urgency: 0.25,
@@ -106,9 +97,6 @@ function needGapScore(category: Category, ward: WardGapFields | null): number {
     case "housing":
       return clamp(ward.housingGapPct, 0, 100);
     default:
-      // agriculture / public_safety / other: no bespoke demographic
-      // indicator is wired up yet, so treat need as neutral rather than
-      // silently zero — demand + urgency still drive the score.
       return 50;
   }
 }
@@ -187,9 +175,6 @@ export async function computePriorities(): Promise<PriorityItem[]> {
     }
   }
 
-  // Pre-compute raw scores for every item, then normalize demand/urgency
-  // together across the *combined* set so citizen clusters and formal
-  // proposals land on one comparable scale.
   interface Draft {
     key: string;
     kind: PriorityItem["kind"];

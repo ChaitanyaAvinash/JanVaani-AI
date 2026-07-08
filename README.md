@@ -25,7 +25,9 @@ Without a key, the app still runs end-to-end using a small offline keyword-based
 fallback analyzer instead of Gemini — useful for development, not for the real
 demo.
 
-Set up the database and load the demo dataset:
+Add a Postgres connection string to `.env` as `DATABASE_URL` — from a Vercel
+Postgres/Neon database (Vercel dashboard → Storage tab) or any Postgres host —
+then set up the database and load the demo dataset:
 
 ```bash
 npx prisma migrate dev
@@ -92,17 +94,14 @@ their score breakdowns plus an optional AI-generated briefing paragraph
 
 ## Stack
 
-Next.js (App Router) + TypeScript + Tailwind, Prisma + SQLite (via the
-`@prisma/adapter-better-sqlite3` driver adapter — swap the datasource for
-Postgres for a real deployment), Gemini (`@google/generative-ai`) for all NLP,
+Next.js (App Router) + TypeScript + Tailwind, Prisma + Postgres (via the
+`@prisma/adapter-neon` driver adapter, works with Vercel Postgres/Neon or any
+Postgres host), Gemini (`@google/generative-ai`) for all NLP,
 Leaflet/OpenStreetMap for the hotspot map, Recharts-free hand-built meters
 following a validated accessible color palette (see `src/lib/categories.ts`
 and `src/app/globals.css`).
 
 ## Known limitations (hackathon scope)
-
-- SQLite is file-based; fine for a demo, swap `DATABASE_URL` + the driver
-  adapter for Postgres before any real deployment.
 - WhatsApp/SMS intake is represented by a `channel` field and a chat-style UI,
   not a live Twilio/WhatsApp Business API integration.
 - Photos/voice clips are stored inline as base64 data URLs for demo

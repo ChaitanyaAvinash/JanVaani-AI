@@ -4,7 +4,6 @@ export function splitDataUrl(dataUrl: string): { mimeType: string; base64: strin
   return { mimeType: match[1], base64: match[2] };
 }
 
-/** Downscale + re-encode an image file client-side so uploads stay small. */
 export function fileToResizedDataUrl(
   file: File,
   maxDim = 900,
@@ -47,7 +46,6 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
   });
 }
 
-/** Picks a MediaRecorder mimeType the current browser actually supports. */
 export function pickAudioMimeType(): string {
   const candidates = [
     "audio/webm;codecs=opus",

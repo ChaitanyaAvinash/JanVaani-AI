@@ -1,7 +1,3 @@
-/**
- * Seed data is entirely synthetic — a fictional constituency invented for
- * this demo, not a real place. Ward names/coordinates are illustrative only.
- */
 import "dotenv/config";
 import { prisma } from "@/lib/prisma";
 import { analyzeSubmission, isGeminiConfigured } from "@/lib/gemini";
@@ -226,7 +222,6 @@ interface SeedSubmission {
 }
 
 const SUBMISSIONS: SeedSubmission[] = [
-  // Ramapuram Town — relatively well-served baseline ward
   {
     wardKey: "ramapuram-town",
     channel: "text",
@@ -254,7 +249,6 @@ const SUBMISSIONS: SeedSubmission[] = [
     citizenName: "K. Srinivas",
   },
 
-  // Kondapalli — school overcrowding
   {
     wardKey: "kondapalli",
     channel: "text",
@@ -294,7 +288,6 @@ const SUBMISSIONS: SeedSubmission[] = [
     text: "కొండపల్లిలో పంటలకు గిట్టుబాటు ధర రావడం లేదు, రైతులు ఇబ్బంది పడుతున్నారు.",
   },
 
-  // Yellareddy Peta — drinking water crisis
   {
     wardKey: "yellareddy-peta",
     channel: "voice",
@@ -353,7 +346,6 @@ const SUBMISSIONS: SeedSubmission[] = [
     text: "यहाँ खेती के लिए सिंचाई की सुविधा नहीं है, बारिश पर ही निर्भर रहना पड़ता है।",
   },
 
-  // Machavaram — the headline example: overcrowded school vs a weakly-backed vocational centre proposal
   {
     wardKey: "machavaram",
     channel: "text",
@@ -424,7 +416,6 @@ const SUBMISSIONS: SeedSubmission[] = [
     citizenName: "Y. Sitamma",
   },
 
-  // Sitanagaram — power outages
   {
     wardKey: "sitanagaram",
     channel: "voice",
@@ -463,7 +454,6 @@ const SUBMISSIONS: SeedSubmission[] = [
     text: "बिजली की समस्या से खेती को भी नुकसान हो रहा है, मोटर नहीं चल पाती।",
   },
 
-  // Bandarupalli — unemployment / vocational demand
   {
     wardKey: "bandarupalli",
     channel: "text",
@@ -503,7 +493,6 @@ const SUBMISSIONS: SeedSubmission[] = [
     text: "Following up on our request for an ITI in Bandarupalli, this would really help the local youth.",
   },
 
-  // Peddapuram — roads and housing
   {
     wardKey: "peddapuram",
     channel: "text",

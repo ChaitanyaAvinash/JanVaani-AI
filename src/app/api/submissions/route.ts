@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { analyzeSubmission } from "@/lib/gemini";
 import type { Channel } from "@/generated/prisma/enums";
 
-const MAX_BASE64_LEN = 3_000_000; // ~2.2MB binary — plenty for a demo photo/voice clip
+const MAX_BASE64_LEN = 3_000_000;
 
 const VALID_CHANNELS: Channel[] = ["text", "voice", "photo", "whatsapp"];
 

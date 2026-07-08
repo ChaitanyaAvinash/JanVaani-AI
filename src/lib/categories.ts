@@ -14,13 +14,9 @@ export interface CategoryMeta {
     | "wheat"
     | "shield"
     | "circle-ellipsis";
-  /** CSS custom property (defined in globals.css, theme-aware) carrying this category's identity color. */
   cssVar: string;
 }
 
-// Ordered per the dataviz skill's fixed categorical slot order. public_safety
-// and other intentionally share the neutral slot rather than inventing a 9th
-// hue — they're distinguished by icon + label, not color.
 export const CATEGORY_META: Record<Category, CategoryMeta> = {
   education: {
     category: "education",
@@ -86,7 +82,6 @@ export const CATEGORY_META: Record<Category, CategoryMeta> = {
 
 export const CATEGORY_LIST = Object.values(CATEGORY_META);
 
-// Fixed status palette — never themed, never reused for category identity.
 export const STATUS_COLORS = {
   good: "var(--status-good)",
   warning: "var(--status-warning)",
